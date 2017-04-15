@@ -35,9 +35,12 @@
 				       (joy-val 3)))))))
     
     
-    (format t "~A ~A~%" +j0+ (v2:length +j0+))
+    (format t "~A ~A~%" +j0+ (chip:cp-body-get-velocity *player-physics-body*))
 
-    (squish-arrow *player-blue-arrow* *player-blue-arrow-texture* 1 (v2:length +j0+) 1 -2)
+    (squish-arrow *player-blue-arrow* *player-blue-arrow-texture* 1 (if (zerop (v2:length (chip:cp-body-get-velocity 
+											   *player-physics-body*)))
+									       0.0
+									       (v2:length +j0+)) 1 -2)
     (squish-arrow *player-orange-arrow* *player-orange-arrow-texture* 1 (v2:length +j1+) 1 -1)
     
     (when +j0+ (!r *player-body* (vec->rot +j0+) 0 0 1 t))

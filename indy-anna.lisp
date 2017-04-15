@@ -10,7 +10,6 @@
 (defevent clinch:*on-idle* ()
   
   (step-physics (/ 1 60 2))
-  (format t "~A~%" *delta-ticks*)
   
   (*default-on-idle*)) 
 
