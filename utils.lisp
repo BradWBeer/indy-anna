@@ -37,13 +37,17 @@
   (!t node 0 (* y (height texture) 1/2) depth t) 
   )
 
+
 (defun ceiling-vector (v)
   (if (> (v2:length v) 1)
       (v2:normalize v)
       v))
 
+(defun vector-below-threshold (v)
+  (< (v2:length v) +joy-cutoff+))
+
 (defun floor-vector (v)
-  (if (< (v2:length v) +joy-cutoff+)
+  (if (vector-below-threshold v)
       (v! 0 0)
       v))
 

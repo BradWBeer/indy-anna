@@ -2,14 +2,12 @@
 
 (in-package #:indy-anna)
 
-(defparameter cspace nil)
-(defparameter ground nil)
 
 ;; (defparameter ball-body nil)
 ;; (defparameter ball-shape nil)
 ;; (defparameter moment-of-inertia nil)
 
-(defparameter dt 1/60)
+;;(defparameter dt 1/60)
 
 (defun init-physics ()
 
@@ -17,7 +15,23 @@
   (chip:cp-space-set-collision-slop cspace 2)
   (chip:cp-space-set-iterations cspace 5)
 
+  (setf *player-physics-body*
+	(chip:cp-body-new 1 
+			  (chip:cp-moment-for-circle 1 0 5)))
+
+  (chip:cp-space-add-body cspace *player-physics-body*)
+  (chip:cp-body-set-position *player-physics-body* (v! 0 0))
+
+  (setf *player-physics-shape*
+	(chip:cp-space-add-shape 
+	 cspace
+	 (chip:cp-circle-shape-new *player-physics-body* 5)))
+
+  (chip:cp-shape-set-friction *player-physics-shape* 0.7)
+
+  
   )
+
 ;; (chip:cp-space-set-gravity cspace (v! 0 -100))
 
 ;; (setf ground
@@ -50,15 +64,23 @@
   ;; (c-let ((cspace
   ;; 	   (:struct (%chipmunk:cp-space)) :from cspace))
   
-    (format t "Callback!~%")
     (cffi:null-pointer))
 
-(defun step-physics ()
+(defun step-physics (dt)
   
-  ;; (format t "p=~A v=~A~%"
-  ;; 	  (chip:cp-body-get-position ball-body)
-  ;; 	  (chip:cp-body-get-velocity ball-body))
-  (%chip:cp-space-add-post-step-callback cspace (autowrap:callback 'my-callback) (cffi:null-pointer) (cffi:null-pointer))
+  (let ((pos (chip:cp-body-get-position *player-physics-body*))
+	(vel (chip:cp-body-get-velocity *player-physics-body*)))
+
+    ;;(format t "p=~A v=~A~%" pos vel)
+
+    (!t *player* (elt pos 0) (elt pos 1) 0 t)
+    
+    )
+  
+  (%chip:cp-space-add-post-step-callback cspace 
+					 (autowrap:callback 'physics-callback) 
+					 (cffi:null-pointer) 
+					 (cffi:null-pointer))
   (chip:cp-space-step cspace dt))
 
 (defun unint-physics ()

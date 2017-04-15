@@ -12,6 +12,9 @@
 (defparameter +j0+ (v! 0 0))
 (defparameter +j1+ (v! 0 0))
 
+(defparameter cspace nil)
+(defparameter ground nil)
+
 (defparameter *player* nil)
 (defparameter *player-body* nil)
 (defparameter *player-blue-arrow* nil)
@@ -21,3 +24,6 @@
 (defparameter *player-blue-arrow-texture* nil)
 (defparameter *player-orange-arrow-texture* nil)
 (defparameter *orange-rotate-arrow* nil)
+
+(defparameter *player-physics-body* nil)
+(defparameter *player-physics-shape* nil)

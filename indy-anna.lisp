@@ -7,9 +7,17 @@
 (init)
 
 
+(defevent clinch:*on-idle* ()
+  
+  (step-physics (/ 1 60 2))
+  (format t "~A~%" *delta-ticks*)
+  
+  (*default-on-idle*)) 
 
 
-(! 
+(!
+  (init-physics)
+  
   (setf (children *root*) nil)
   (gl:clear-color 1 1 1 1)
   (setf *player* (make-instance 'node :parent *root* :name "player"))
